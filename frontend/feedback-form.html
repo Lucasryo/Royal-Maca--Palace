@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback - Royal Macaé Palace</title>
+    <style>
+        /* Cores do Royal Macaé Palace */
+        :root {
+            --primary: #0b3d91;      /* Azul royal */
+            --secondary: #d4af37;    /* Dourado */
+            --accent: #007acc;       /* Azul claro */
+            --light: #f5f5f5;        /* Cinza claro para fundos */
+            --dark: #2c3e50;         /* Azul escuro quase preto para textos */
+            --success: #2ecc71;      /* Verde para mensagens de sucesso */
+            --danger: #e74c3c;       /* Vermelho para mensagens de erro */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background-color: #f0f2f5;
+            color: var(--dark);
+            padding: 0;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background-color: var(--primary);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            border-bottom: 4px solid var(--secondary);
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .header p {
+            font-size: 16px;
+            margin-top: 5px;
+            color: var(--secondary);
+        }
+
+        .form-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .step {
+            display: none;
+            padding: 25px;
+        }
+
+        .step.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .step-header {
+            background-color: var(--light);
+            padding: 15px 25px;
+            border-bottom: 2px solid var(--secondary);
+            margin: -25px -25px 20px -25px;
+        }
+
+        .step-header h2 {
+            color: var(--primary);
+            font-size: 20px;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="date"],
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="date"]:focus,
+        textarea:focus {
+            border-color: var(--accent);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0, 122, 204, 0.1);
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .rating-group {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed #ddd;
+        }
+
+        .rating-label {
+            font-weight: 500;
+            flex: 1;
+        }
+
+        .rating-input {
+            display: flex;
+            align-items: center;
+        }
+
+        .rating-value {
+            width: 40px;
+            text-align: center;
+            font-weight: bold;
+            margin: 0 10px;
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 180px;
+            height: 10px;
+            border-radius: 5px;
+            background: #ddd;
+            outline: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--secondary);
+            cursor: pointer;
+        }
+
+        .checkbox-group,
+        .radio-group {
+            margin-top: 10px;
+        }
+
+        .checkbox-item,
+        .radio-item {
+            display: inline-block;
+            margin-right: 15px;
+            margin-bottom: 10px;
+        }
+
+        .checkbox-item input,
+        .radio-item input {
+            margin-right: 5px;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0a3272;
+        }
+
+        button.secondary {
+            background-color: #6c757d;
+        }
+
+        button.secondary:hover {
+            background-color: #5a6268;
+        }
+
+        button.submit {
+            background-color: var(--success);
+        }
+
+        button.submit:hover {
+            background-color: #27ae60;
+        }
+
+        .progress-bar {
+            height: 5px;
+            background-color: #ddd;
+            border-radius: 2px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background-color: var(--secondary);
+            width: 33.33%;
+            transition: width 0.3s ease;
+        }
+
+        #successMessage,
+        #errorMessage {
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 20px;
+            display: none;
+        }
+
+        #successMessage {
+            background-color: rgba(46, 204, 113, 0.2);
+            border: 1px solid var(--success);
+            color: #27ae60;
+        }
+
+        #errorMessage {
+            background-color: rgba(231, 76, 60, 0.2);
+            border: 1px solid var(--danger);
+            color: #c0392b;
+        }
+
+        .message-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
+        .star-rating {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: flex-end;
+        }
+
+        .star-rating input {
+            display: none;
+        }
+
+        .star-rating label {
+            cursor: pointer;
+            font-size: 30px;
+            color: #ddd;
+            margin-right: 5px;
+        }
+
+        .star-rating :checked ~ label,
+        .star-rating label:hover,
+        .star-rating label:hover ~ label {
+            color: var(--secondary);
+        }
+
+        .footer {
+            background-color: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 15px;
+            border-top: 4px solid var(--secondary);
+            margin-top: 30px;
+        }
+
+        .footer p {
+            font-size: 14px;
+            margin: 0;
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .step {
+                padding: 15px;
+            }
+
+            .step-header {
+                padding: 10px 15px;
+                margin: -15px -15px 15px -15px;
+            }
+
+            .rating-group {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .rating-input {
+                margin-top: 10px;
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            input[type="range"] {
+                width: 70%;
+            }
+
+            .buttons {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+
+        /* Animações */
+        .pulse {
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>Royal Macaé Palace</h1>
+    <p>Formulário de Feedback</p>
+</div>
+
+<div class="container">
+    <div class="progress-bar">
+        <div class="progress" id="progressBar"></div>
+    </div>
+
+    <div class="form-card">
+        <form id="feedbackForm">
+            <div class="step active" id="step1">
+                <div class="step-header">
+                    <h2>Dados do Hóspede</h2>
+                </div>
+                
+                <div class="form-group">
+                    <label for="name">Nome</label>
+                    <input type="text" id="name" placeholder="Seu nome completo">
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" placeholder="seu.email@exemplo.com">
+                </div>
+                
+                <div class="form-group">
+                    <label for="roomNumber">Número do Quarto</label>
+                    <input type="text" id="roomNumber" placeholder="Ex: 302">
+                </div>
+                
+                <div class="form-group">
+                    <label for="checkInDate">Data de Check-in</label>
+                    <input type="date" id="checkInDate">
+                </div>
+                
+                <div class="form-group">
+                    <label for="checkOutDate">Data de Check-out</label>
+                    <input type="date" id="checkOutDate">
+                </div>
+                
+                <div class="buttons">
+                    <div></div> <!-- Espaço vazio para alinhamento -->
+                    <button type="button" onclick="nextStep(1)">Próximo</button>
+                </div>
+            </div>
+
+            <div class="step" id="step2">
+                <div class="step-header">
+                    <h2>Avaliação dos Serviços</h2>
+                </div>
+                
+                <div class="rating-group">
+                    <div class="rating-label">Recepção</div>
+                    <div class="rating-input">
+                        <input type="range" id="ratingReception" min="1" max="5" value="3" oninput="updateRatingValue('ratingReception')">
+                        <div class="rating-value" id="ratingReceptionValue">3</div>
+                    </div>
+                </div>
+                
+                <div class="rating-group">
+                    <div class="rating-label">Limpeza</div>
+                    <div class="rating-input">
+                        <input type="range" id="ratingCleanliness" min="1" max="5" value="3" oninput="updateRatingValue('ratingCleanliness')">
+                        <div class="rating-value" id="ratingCleanlinessValue">3</div>
+                    </div>
+                </div>
+                
+                <div class="rating-group">
+                    <div class="rating-label">Conforto</div>
+                    <div class="rating-input">
+                        <input type="range" id="ratingComfort" min="1" max="5" value="3" oninput="updateRatingValue('ratingComfort')">
+                        <div class="rating-value" id="ratingComfortValue">3</div>
+                    </div>
+                </div>
+                
+                <div class="rating-group">
+                    <div class="rating-label">Café da Manhã</div>
+                    <div class="rating-input">
+                        <input type="range" id="ratingBreakfast" min="1" max="5" value="3" oninput="updateRatingValue('ratingBreakfast')">
+                        <div class="rating-value" id="ratingBreakfastValue">3</div>
+                    </div>
+                </div>
+                
+                <div class="rating-group">
+                    <div class="rating-label">Restaurante</div>
+                    <div class="rating-input">
+                        <input type="range" id="ratingRestaurant" min="1" max="5" value="3" oninput="updateRatingValue('ratingRestaurant')">
+                        <div class="rating-value" id="ratingRestaurantValue">3</div>
+                    </div>
+                </div>
+                
+                <div class="rating-group">
+                    <div class="rating-label">Lazer</div>
+                    <div class="rating-input">
+                        <input type="range" id="ratingLeisure" min="1" max="5" value="3" oninput="updateRatingValue('ratingLeisure')">
+                        <div class="rating-value" id="ratingLeisureValue">3</div>
+                    </div>
+                </div>
+                
+                <div class="rating-group">
+                    <div class="rating-label">Avaliação Geral</div>
+                    <div class="rating-input">
+                        <input type="range" id="ratingOverall" min="1" max="5" value="3" oninput="updateRatingValue('ratingOverall')">
+                        <div class="rating-value" id="ratingOverallValue">3</div>
+                    </div>
+                </div>
+                
+                <div class="buttons">
+                    <button type="button" class="secondary" onclick="prevStep(1)">Voltar</button>
+                    <button type="button" onclick="nextStep(2)">Próximo</button>
+                </div>
+            </div>
+
+            <div class="step" id="step3">
+                <div class="step-header">
+                    <h2>Comentários e Serviços</h2>
+                </div>
+                
+                <div class="form-group">
+                    <label for="likedMost">O que mais gostou?</label>
+                    <textarea id="likedMost" placeholder="Conte-nos o que você mais gostou da sua estadia"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="improvements">O que podemos melhorar?</label>
+                    <textarea id="improvements" placeholder="Suas sugestões são importantes para nós"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="additionalComments">Comentários adicionais</label>
+                    <textarea id="additionalComments" placeholder="Outros comentários que gostaria de compartilhar"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>Quais serviços você utilizou?</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="restaurant" name="services" value="restaurant">
+                            <label for="restaurant">Restaurante</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="roomService" name="services" value="roomService">
+                            <label for="roomService">Serviço de Quarto</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="pool" name="services" value="pool">
+                            <label for="pool">Piscina</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="gym" name="services" value="gym">
+                            <label for="gym">Academia</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="spa" name="services" value="spa">
+                            <label for="spa">Spa</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="businessCenter" name="services" value="businessCenter">
+                            <label for="businessCenter">Business Center</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Você recomendaria o Royal Macaé Palace?</label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" id="recommendYes" name="recommend" value="yes" checked>
+                            <label for="recommendYes">Sim</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="recommendNo" name="recommend" value="no">
+                            <label for="recommendNo">Não</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="buttons">
+                    <button type="button" class="secondary" onclick="prevStep(2)">Voltar</button>
+                    <button type="submit" class="submit">Enviar Avaliação</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div id="successMessage">
+        <div class="message-icon">✅</div>
+        <h2>Avaliação Enviada com Sucesso!</h2>
+        <p>Muito obrigado pela sua contribuição. Sua opinião é muito importante para continuarmos melhorando nossos serviços.</p>
+    </div>
+
+    <div id="errorMessage">
+        <div class="message-icon">❌</div>
+        <h2>Erro ao Enviar Avaliação</h2>
+        <p>Ocorreu um problema ao enviar sua avaliação. Por favor, tente novamente mais tarde ou entre em contato com a recepção.</p>
+    </div>
+</div>
+
+<div class="footer">
+    <p>Royal Macaé Palace &copy; 2025 - Todos os direitos reservados</p>
+</div>
+
+<script>
+    function nextStep(current) {
+        document.getElementById('step' + current).classList.remove('active');
+        document.getElementById('step' + (current + 1)).classList.add('active');
+        document.getElementById('progressBar').style.width = ((current + 1) * 33.33) + '%';
+    }
+
+    function prevStep(current) {
+        document.getElementById('step' + current).classList.remove('active');
+        document.getElementById('step' + (current - 1)).classList.add('active');
+        document.getElementById('progressBar').style.width = ((current - 1) * 33.33) + '%';
+    }
+
+    function updateRatingValue(id) {
+        const slider = document.getElementById(id);
+        const valueDisplay = document.getElementById(id + 'Value');
+        valueDisplay.textContent = slider.value;
+    }
+
+    // Inicializar valores dos sliders
+    document.addEventListener('DOMContentLoaded', function() {
+        const ratingIds = ['ratingReception', 'ratingCleanliness', 'ratingComfort', 
+                          'ratingBreakfast', 'ratingRestaurant', 'ratingLeisure', 'ratingOverall'];
+        
+        ratingIds.forEach(id => {
+            updateRatingValue(id);
+        });
+    });
+
+    document.getElementById('feedbackForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const services = Array.from(document.querySelectorAll('input[name="services"]:checked')).map(el => el.value);
+        const recommend = document.querySelector('input[name="recommend"]:checked')?.value || '';
+
+        const data = {
+            name: document.getElementById('name').value,
+            email: document.getElementById('email').value,
+            roomNumber: document.getElementById('roomNumber').value,
+            checkInDate: document.getElementById('checkInDate').value,
+            checkOutDate: document.getElementById('checkOutDate').value,
+            ratings: {
+                reception: parseInt(document.getElementById('ratingReception').value),
+                cleanliness: parseInt(document.getElementById('ratingCleanliness').value),
+                comfort: parseInt(document.getElementById('ratingComfort').value),
+                breakfast: parseInt(document.getElementById('ratingBreakfast').value),
+                restaurant: parseInt(document.getElementById('ratingRestaurant').value),
+                leisure: parseInt(document.getElementById('ratingLeisure').value),
+                overall: parseInt(document.getElementById('ratingOverall').value)
+            },
+            likedMost: document.getElementById('likedMost').value,
+            improvements: document.getElementById('improvements').value,
+            additionalComments: document.getElementById('additionalComments').value,
+            services: services,
+            recommend: recommend
+        };
+
+        fetch('http://localhost:5000/api/feedback', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                document.getElementById('feedbackForm').style.display = 'none';
+                document.getElementById('successMessage').style.display = 'block';
+                document.getElementById('successMessage').classList.add('pulse');
+            } else {
+                document.getElementById('errorMessage').style.display = 'block';
+            }
+        })
+        
+    });
+</script>
+
+</body>
+</html>
